@@ -18,7 +18,7 @@ def obtenerCampos(codigo):
 
 PATH = "./codigos"
 total = 0
-ultimo = None
+ultimo = ()
 detector = cv2.wechat_qrcode_WeChatQRCode()
 cap = cv2.VideoCapture(0)
 
@@ -28,6 +28,7 @@ while True:
         break
 
     codigoQR = detectQR(detector, frame)
+    print(codigoQR)
 
     if codigoQR != ultimo:
         fecha, aut, pedido, id, costo = obtenerCampos(codigoQR)
