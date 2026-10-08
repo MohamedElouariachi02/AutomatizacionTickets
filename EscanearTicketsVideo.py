@@ -2,9 +2,7 @@ import cv2
 import os
 
 
-def detectQR(imagePath):
-    img = cv2.imread(imagePath)
-    detector = cv2.wechat_qrcode_WeChatQRCode()
+def detectQR(detector, img):
     textos, _ = detector.detectAndDecode(img)
     return textos
 
@@ -20,19 +18,27 @@ def obtenerCampos(codigo):
 
 PATH = "./codigos"
 total = 0
-tickets = os.listdir(PATH)
-if tickets:
-    for ticket in tickets:
-        print(f"Ticket: {ticket}")
-        codigoQR = detectQR(f"{PATH}/{ticket}")
-        if (codigoQR == ()):
-            print(f"Escaneo fallido")
-            print("----------------------------")
-            continue
+ultimo = None
+detector = cv2.wechat_qrcode_WeChatQRCode()
+cap = cv2.VideoCapture(0)
+
+while True:
+    ok, frame = cap.read()
+    if not ok:
+        break
+
+    codigoQR = detectQR(detector, frame)
+
+    if codigoQR != ultimo:
         fecha, aut, pedido, id, costo = obtenerCampos(codigoQR)
         total += costo
         print(f"Escaneo exitoso")
-        print("----------------------------")
+        print(f"Ticket: {id}")
+        ultimo = codigoQR
+
+    cv2.imshow("Lector QR (q para salir)", frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
 
 print(f"Total: {total}€")
 cv2.waitKey(0)
