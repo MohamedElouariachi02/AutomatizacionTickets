@@ -7,7 +7,7 @@ def detectQR(detector, img):
     return textos
 
 def obtenerCampos(codigo):
-    campos = codigoQR[0].split("=")
+    campos = codigo[0].split("=")
     fecha = f"{campos[2][6:]}/{campos[2][4:6]}/{campos[2][:4]}"
     aut = campos[3]
     pedido = campos[4]
@@ -34,6 +34,7 @@ while True:
         total += costo
         print(f"Escaneo exitoso")
         print(f"Ticket: {id}")
+        print(f"-----------------------------")
         ultimo = codigoQR
 
     cv2.imshow("Lector QR (q para salir)", frame)
