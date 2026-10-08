@@ -28,9 +28,9 @@ while True:
         break
 
     codigoQR = detectQR(detector, frame)
-    print(codigoQR)
 
-    if codigoQR != ultimo:
+    if codigoQR != ultimo and codigoQR != ():
+        print(codigoQR)
         fecha, aut, pedido, id, costo = obtenerCampos(codigoQR)
         total += costo
         print(f"Escaneo exitoso")
